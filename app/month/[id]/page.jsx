@@ -19,7 +19,7 @@ export default function MonthPage() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const API = "http://localhost:3001";
+  const API = "https://server-amado.onrender.com";
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -115,7 +115,7 @@ export default function MonthPage() {
   const photos = memories
     .filter((m) => m.imageUrl)
     .map((m) => ({
-      src: `http://localhost:3001${m.imageUrl}`,
+      src: m.imageUrl,
       caption: m.message || "",
     }));
 
