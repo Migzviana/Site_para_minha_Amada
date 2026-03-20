@@ -6,7 +6,7 @@ import PolaroidGallery from "@/components/PolaroidGallery";
 
 export default function MonthPage() {
   const params = useParams();
-  const id = Number(params.id);
+  const id = params?.id ? Number(params.id) : null;
 
   const router = useRouter();
 
@@ -20,6 +20,9 @@ export default function MonthPage() {
   const [loading, setLoading] = useState(false);
 
   const API = "https://server-amado.onrender.com";
+
+  console.log("PARAMS:", params);
+  console.log("ID:", id);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -51,8 +54,9 @@ export default function MonthPage() {
   }, [id]);
 
   useEffect(() => {
+    if (!id) return;
     loadMemories();
-  }, [loadMemories]);
+  }, [id, loadMemories]);
 
   async function sendMemory() {
     const token = localStorage.getItem("token");
@@ -116,7 +120,7 @@ export default function MonthPage() {
   const photos = memories
     .filter((m) => m.imageUrl)
     .map((m) => ({
-      src: `https://server-amado.onrender.com${m.imageUrl}`,
+      src: m.imageUrl,
       caption: m.message || "",
     }));
 
@@ -128,7 +132,6 @@ export default function MonthPage() {
         Memórias do mês {id}
       </h1>
 
-      {/* FORM */}
       <div className="max-w-xl mx-auto bg-white p-6 rounded-xl shadow mb-10">
         <h2 className="text-xl font-semibold mb-4">Nova memória</h2>
 
@@ -155,10 +158,8 @@ export default function MonthPage() {
         </button>
       </div>
 
-      {/* 🖼️ GALERIA POLAROID */}
       {photos.length > 0 && <PolaroidGallery photos={photos} />}
 
-      {/* 📝 TEXTOS */}
       {texts.length > 0 && (
         <div className="mt-10 max-w-2xl mx-auto space-y-4">
           {texts.map((m) => (
