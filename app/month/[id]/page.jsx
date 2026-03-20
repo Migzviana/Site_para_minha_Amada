@@ -29,6 +29,8 @@ export default function MonthPage() {
   }, [router]);
 
   const loadMemories = useCallback(async () => {
+    if (!id || isNaN(id)) return
+
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
@@ -111,11 +113,10 @@ export default function MonthPage() {
     );
   }
 
-  // 🔥 SEPARAÇÃO INTELIGENTE
   const photos = memories
     .filter((m) => m.imageUrl)
     .map((m) => ({
-      src: m.imageUrl,
+      src: `https://server-amado.onrender.com${m.imageUrl}`,
       caption: m.message || "",
     }));
 
